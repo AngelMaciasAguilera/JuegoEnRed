@@ -116,6 +116,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Unirse a una partida"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btUnirseAPartidaClienteActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="Cpuntos">
       <Properties>

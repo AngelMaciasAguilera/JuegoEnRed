@@ -11,24 +11,24 @@ import java.util.Objects;
  *
  * @author Angel
  */
-class Pregunta {
+public class Pregunta {
 
-    private String preguntas;
+    private String pregunta;
     private ArrayList<String> posiblesRespuestas;
     private String respuesta;
 
     public Pregunta(String preguntas, ArrayList<String> posiblesRespuestas, String respuesta) {
-        this.preguntas = preguntas;
+        this.pregunta = preguntas;
         this.posiblesRespuestas = posiblesRespuestas;
         this.respuesta = respuesta;
     }
 
-    public String getPreguntas() {
-        return preguntas;
+    public String getPregunta() {
+        return pregunta;
     }
 
-    public void setPreguntas(String preguntas) {
-        this.preguntas = preguntas;
+    public void setPregunta(String pregunta) {
+        this.pregunta = pregunta;
     }
 
     public ArrayList<String> getPosiblesRespuestas() {
@@ -50,7 +50,7 @@ class Pregunta {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.preguntas);
+        hash = 67 * hash + Objects.hashCode(this.pregunta);
         hash = 67 * hash + Objects.hashCode(this.posiblesRespuestas);
         hash = 67 * hash + Objects.hashCode(this.respuesta);
         return hash;
@@ -68,7 +68,7 @@ class Pregunta {
             return false;
         }
         final Pregunta other = (Pregunta) obj;
-        if (!Objects.equals(this.preguntas, other.preguntas)) {
+        if (!Objects.equals(this.pregunta, other.pregunta)) {
             return false;
         }
         if (!Objects.equals(this.respuesta, other.respuesta)) {
@@ -79,7 +79,7 @@ class Pregunta {
 
     @Override
     public String toString() {
-        return "Pregunta{" + "preguntas=" + preguntas + ", posiblesRespuestas=" + posiblesRespuestas + ", respuesta=" + respuesta + '}';
+        return "Pregunta{" + "preguntas=" + pregunta + ", posiblesRespuestas=" + posiblesRespuestas + ", respuesta=" + respuesta + '}';
     }
 
 }

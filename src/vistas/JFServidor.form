@@ -31,14 +31,22 @@
               <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="preguntaServidor" max="32767" attributes="0"/>
-                  <Component id="opcion1Serivdor" pref="183" max="32767" attributes="0"/>
+                  <Component id="opcion1Servidor" pref="183" max="32767" attributes="0"/>
                   <Component id="opcion2Servidor" max="32767" attributes="0"/>
                   <Component id="opcion3Servidor" max="32767" attributes="0"/>
                   <Component id="opcion4Servidor" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace pref="126" max="32767" attributes="0"/>
-              <Component id="btEmpezarJuego" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+              <EmptySpace pref="87" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="btEmpezarJuego" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="JLestadoServidor" min="-2" pref="167" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -49,6 +57,8 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                       <Component id="btEmpezarJuego" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="JLestadoServidor" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
@@ -62,7 +72,7 @@
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
-              <Component id="opcion1Serivdor" min="-2" max="-2" attributes="0"/>
+              <Component id="opcion1Servidor" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
               <Component id="opcion2Servidor" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
@@ -80,7 +90,7 @@
         <Property name="text" type="java.lang.String" value="Pregunta"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="opcion1Serivdor">
+    <Component class="javax.swing.JButton" name="opcion1Servidor">
       <Properties>
         <Property name="text" type="java.lang.String" value="jButton1"/>
       </Properties>
@@ -104,6 +114,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Empezar partida"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btEmpezarJuegoActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="Spuntos">
       <Properties>
@@ -113,6 +126,11 @@
     <Component class="javax.swing.JLabel" name="puntosServidor">
       <Properties>
         <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="JLestadoServidor">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jLabel1"/>
       </Properties>
     </Component>
   </SubComponents>

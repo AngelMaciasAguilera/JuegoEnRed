@@ -4,17 +4,34 @@
  */
 package vistas;
 
+import controladores.ConCliente;
+import java.io.IOException;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import modelos.Juego;
+
 /**
  *
  * @author Angel
  */
 public class JFCliente extends javax.swing.JFrame {
-
+     private ConCliente cc;
+    private boolean haContestado = false;
+    private boolean haFinalizado = false;
+    private Juego juego;
+    private int puerto = 6010;
+    private String ipCliente = "192.168.0.18";
+    private String nombre = "Angel";
     /**
      * Creates new form JFCliente
      */
     public JFCliente() {
         initComponents();
+        cc = new ConCliente(nombre, puerto, ipCliente);
+        juego = new Juego();
+        
+        
     }
 
     /**
@@ -51,6 +68,11 @@ public class JFCliente extends javax.swing.JFrame {
         opcion4Cliente.setText("jButton4");
 
         btUnirseAPartidaCliente.setText("Unirse a una partida");
+        btUnirseAPartidaCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btUnirseAPartidaClienteActionPerformed(evt);
+            }
+        });
 
         Cpuntos.setText("Puntos:");
 
@@ -106,6 +128,10 @@ public class JFCliente extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btUnirseAPartidaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btUnirseAPartidaClienteActionPerformed
+            
+    }//GEN-LAST:event_btUnirseAPartidaClienteActionPerformed
 
     /**
      * @param args the command line arguments
