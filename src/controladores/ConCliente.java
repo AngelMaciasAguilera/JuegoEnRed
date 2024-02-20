@@ -116,4 +116,22 @@ public class ConCliente implements Runnable {
             return partidaComenzada;
         }
     }
+    
+    public boolean recibirFinalPartida() {
+        boolean partidaFinalizada = false;
+        try {
+            BufferedReader lector = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
+            String mensaje = lector.readLine();
+            if ("TRUE".equals(mensaje)) {
+                partidaFinalizada = true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally{
+            return partidaFinalizada;
+        }
+    }
+    
+    
+    
 }

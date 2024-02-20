@@ -59,7 +59,7 @@ public class JFServidor extends javax.swing.JFrame {
         Spuntos = new javax.swing.JLabel();
         puntosServidor = new javax.swing.JLabel();
         numeroRondas = new javax.swing.JLabel();
-        indicadorRonda = new javax.swing.JLabel();
+        indicadorRondaServidor = new javax.swing.JLabel();
         limiteRondas = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -107,7 +107,7 @@ public class JFServidor extends javax.swing.JFrame {
 
         numeroRondas.setText("Ronda:");
 
-        indicadorRonda.setText("1");
+        indicadorRondaServidor.setText("1");
 
         limiteRondas.setText("/15");
 
@@ -133,7 +133,7 @@ public class JFServidor extends javax.swing.JFrame {
                         .addGap(198, 198, 198)
                         .addComponent(numeroRondas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(indicadorRonda)
+                        .addComponent(indicadorRondaServidor)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(limiteRondas)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
@@ -151,7 +151,7 @@ public class JFServidor extends javax.swing.JFrame {
                         .addGap(11, 11, 11)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(numeroRondas)
-                            .addComponent(indicadorRonda)
+                            .addComponent(indicadorRondaServidor)
                             .addComponent(limiteRondas))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -249,7 +249,7 @@ public class JFServidor extends javax.swing.JFrame {
         Thread juegoThread = new Thread(() -> {
             int puntos = 0;
             for (int i = 1; i < 16; i++) {
-                this.indicadorRonda.setText(String.valueOf(i));
+                this.indicadorRondaServidor.setText(String.valueOf(i));
                 SwingUtilities.invokeLater(() -> {
                     modificarPregunta();
                     modificarEstado(true); // Habilitar botones
@@ -342,7 +342,7 @@ public class JFServidor extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Spuntos;
     private javax.swing.JButton btEmpezarJuego;
-    private javax.swing.JLabel indicadorRonda;
+    private javax.swing.JLabel indicadorRondaServidor;
     private javax.swing.JLabel limiteRondas;
     private javax.swing.JLabel numeroRondas;
     private javax.swing.JButton opcion1Servidor;

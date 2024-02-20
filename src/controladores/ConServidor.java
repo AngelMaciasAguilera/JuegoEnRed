@@ -20,6 +20,7 @@ public class ConServidor implements Runnable {
     private Thread hilo;
     private ServerSocket servidor;
     private int puerto;
+    private Socket cliente;
 
     public ConServidor(String nombre, int puerto) {
         this.puerto = puerto;
@@ -97,13 +98,24 @@ public class ConServidor implements Runnable {
     
     
     public void notificarInicioJuego(Socket cliente){
-    
+        
         try {
             PrintWriter escritor = new PrintWriter(cliente.getOutputStream(), true);
             escritor.println("INICIO_PARTIDA"); // Mensaje de señalización
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    
+    public void notificarFinalJuego(){
+        try {
+            PrintWriter escritor = new PrintWriter(this.cliente.getOutputStream(), true);
+            escritor.println("INICIO_PARTIDA"); // Mensaje de señalización
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
     }
 
 }
