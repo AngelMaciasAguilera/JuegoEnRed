@@ -26,7 +26,7 @@ public class JFCliente extends javax.swing.JFrame {
     private boolean haFinalizado = false;
     private Juego juego;
     private int puerto = 6010;
-    private String ipCliente = "192.168.0.18";
+    private String ipCliente = "localhost";
     private String nombre = "Angel";
     private String respuestaCorrecta = "";
     private String respuestaElegida = "";
@@ -180,6 +180,7 @@ public class JFCliente extends javax.swing.JFrame {
         cc = new ConCliente(nombre, puerto, ipCliente);
         if (cc.confirmarInicioPartida() == true) {
             JOptionPane.showMessageDialog(this, "El juego va a comenzar");
+            this.btUnirseAPartidaCliente.setEnabled(false);
             fJuego();
         } else {
             JOptionPane.showMessageDialog(this, "Ocurrio un fallo al recibir informacion del servidor, por favor, reinicie la aplicacion");
@@ -243,6 +244,7 @@ public class JFCliente extends javax.swing.JFrame {
     private void fJuego() {
 
         Thread juegoThread = new Thread(() -> {
+            String resultado = "";
             int puntos = 0;
             for (int i = 1; i < 16; i++) {
                 this.indicadorRondaCliente.setText(String.valueOf(i));
@@ -254,15 +256,15 @@ public class JFCliente extends javax.swing.JFrame {
                 // Esperar hasta que el usuario haya contestado
                 while (!haContestado) {
                     try {
-                        Thread.sleep(100); // Puedes ajustar el tiempo de espera según tus necesidades
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
 
                 if (this.respuestaElegida.equals(this.respuestaCorrecta)) {
-                    this.juego.setPuntos(60);
-                    this.puntosCliente.setText(String.valueOf(this.juego.getPuntos()));
+                    Juego.PUNTOSCLIENTE += 60;
+                    this.puntosCliente.setText(String.valueOf(Juego.PUNTOSCLIENTE += 60));
                 }
 
                 // Una vez que el usuario ha contestado, modificar la pregunta nuevamente
@@ -278,12 +280,43 @@ public class JFCliente extends javax.swing.JFrame {
                     this.opcion2Cliente.setText("Finalizado");
                     this.opcion3Cliente.setText("Finalizado");
                     this.opcion4Cliente.setText("Finalizado");
+                    try {
+                        this.cc.notificarRespuestaFinalizada();
+                    } catch (IOException ex) {
+                        Logger.getLogger(JFServidor.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    if (cc.comprobarRival(this) == true) {
+                        switch (comprobarResultadoCliente()) {
+                            case 0:
+                                resultado = "Han quedado empatados";
+                                break;
+                            case -1:
+                                resultado = "Has perdido. :((( ";
+                                break;
+                            case 1:
+                                resultado = "Has ganado. ¡Enhorabuena!";
+                                break;
+                        }
+                        JOptionPane.showMessageDialog(this, resultado);
+                        this.dispose();
+                    }
+
                 }
             }
         });
 
         juegoThread.start();
 
+    }
+
+    private int comprobarResultadoCliente() {
+        int recuentoPuntos = 0;
+        if (Juego.PUNTOSCLIENTE > Juego.PUNTOSSERVIDOR) {
+            recuentoPuntos = 1;
+        }else{
+            recuentoPuntos = -1;
+        }
+        return recuentoPuntos;
     }
 
     /**
@@ -315,7 +348,6 @@ public class JFCliente extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

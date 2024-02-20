@@ -4,12 +4,16 @@
  */
 package controladores;
 
+import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Objects;
+import javax.naming.Context;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -22,6 +26,7 @@ public class ConCliente implements Runnable {
     private Socket cliente;
     private int puerto;
     private String direccion_ip;
+    private FlujoClienteServidor fcs;
 
     public ConCliente(String nombre, int puerto, String direccion_ip) {
         this.nombre = nombre;
@@ -30,7 +35,9 @@ public class ConCliente implements Runnable {
         this.hilo = new Thread(this, nombre);
         try {
             cliente = new Socket(this.direccion_ip, this.puerto);
+            fcs = new FlujoClienteServidor(cliente);
             String texto = "conexion establecida correctamente";
+
         } catch (UnknownHostException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -100,38 +107,47 @@ public class ConCliente implements Runnable {
     public void run() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     public boolean confirmarInicioPartida() {
         boolean partidaComenzada = false;
         try {
-            BufferedReader lector = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
-            String mensaje = lector.readLine();
-
+            String mensaje = this.fcs.recibirMensaje();
             if ("INICIO_PARTIDA".equals(mensaje)) {
                 partidaComenzada = true;
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }finally{
+        } finally {
+            return partidaComenzada;
+        }
+    }
+
+    public boolean comprobarRival(Component component) {
+        boolean partidaComenzada = false;
+        try {
+            new Thread(() -> {
+
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(component, "Esperando a que el rival conteste");
+
+                });
+            }).start();
+            String mensaje = this.fcs.recibirMensaje();
+            if (mensaje == null) {
+                System.out.println("Es nulo");
+            }
+            if ("FINALIZACION_PARTIDA".equals(mensaje)) {
+                partidaComenzada = true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
             return partidaComenzada;
         }
     }
     
-    public boolean recibirFinalPartida() {
-        boolean partidaFinalizada = false;
-        try {
-            BufferedReader lector = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
-            String mensaje = lector.readLine();
-            if ("TRUE".equals(mensaje)) {
-                partidaFinalizada = true;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally{
-            return partidaFinalizada;
-        }
+    
+     public void notificarRespuestaFinalizada() throws IOException {
+       this.fcs.enviarMensaje("FINALIZACION_PARTIDA");
     }
-    
-    
-    
 }

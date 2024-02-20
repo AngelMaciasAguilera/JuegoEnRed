@@ -15,23 +15,14 @@ import java.util.Objects;
  */
 public class Juego {
 
-    private int puntos = 0;
+    public static int PUNTOSCLIENTE = 0;
+    public static int PUNTOSSERVIDOR = 0;
     private HashMap<Integer, Pregunta> preguntas;
 
     public Juego() {
-        this.puntos = 0;
         this.preguntas = this.rellenarPreguntas();
     }
 
-    public int getPuntos() {
-        return puntos;
-    }
-
-    public void setPuntos(int puntos) {
-        this.puntos += puntos;
-    }
-
-    
 
     public HashMap<Integer, Pregunta> getPreguntas() {
         return preguntas;
@@ -44,7 +35,7 @@ public class Juego {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 83 * hash + this.puntos;
+        hash = 83 * hash + this.PUNTOSCLIENTE;
         hash = 83 * hash + Objects.hashCode(this.preguntas);
         return hash;
     }
@@ -61,7 +52,7 @@ public class Juego {
             return false;
         }
         final Juego other = (Juego) obj;
-        if (puntos != other.puntos) {
+        if (PUNTOSCLIENTE != other.PUNTOSCLIENTE) {
             return false;
         }
         return Objects.equals(this.preguntas, other.preguntas);
@@ -69,7 +60,7 @@ public class Juego {
 
     @Override
     public String toString() {
-        return "Juego{" + "contador=" + puntos + ", preguntas=" + preguntas + '}';
+        return "Juego{" + "contador=" + PUNTOSCLIENTE + ", preguntas=" + preguntas + '}';
     }
 
     //Metodo para obtener una pregunta aleatoria

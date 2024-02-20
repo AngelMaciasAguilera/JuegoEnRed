@@ -4,11 +4,14 @@
  */
 package controladores;
 
+import java.awt.Component;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Objects;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -20,7 +23,7 @@ public class ConServidor implements Runnable {
     private Thread hilo;
     private ServerSocket servidor;
     private int puerto;
-    private Socket cliente;
+    private FlujoClienteServidor fcs;
 
     public ConServidor(String nombre, int puerto) {
         this.puerto = puerto;
@@ -95,27 +98,39 @@ public class ConServidor implements Runnable {
     public String toString() {
         return "ConServidor{" + "nombre=" + nombre + ", hilo=" + hilo + ", servidor=" + servidor + ", puerto=" + puerto + '}';
     }
-    
-    
-    public void notificarInicioJuego(Socket cliente){
-        
-        try {
-            PrintWriter escritor = new PrintWriter(cliente.getOutputStream(), true);
-            escritor.println("INICIO_PARTIDA"); // Mensaje de señalización
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    
-    public void notificarFinalJuego(){
-        try {
-            PrintWriter escritor = new PrintWriter(this.cliente.getOutputStream(), true);
-            escritor.println("INICIO_PARTIDA"); // Mensaje de señalización
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    
+
+    public void notificarInicioJuego(Socket clienteInsertado) throws IOException {
+        this.fcs = new FlujoClienteServidor(clienteInsertado);
+        this.fcs.enviarMensaje("INICIO_PARTIDA");
     }
 
+    public void notificarRespuestaFinalizada(Socket clienteInsertado) throws IOException {
+        FlujoClienteServidor flujo = new FlujoClienteServidor(clienteInsertado);
+        flujo.enviarMensaje("FINALIZACION_PARTIDA");
+    }
+    
+    public boolean comprobarRival(Component component) {
+        boolean partidaComenzada = false;
+        try {
+            new Thread(() -> {
+
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(component, "Esperando a que el rival conteste");
+
+                });
+            }).start();
+            String mensaje = this.fcs.recibirMensaje();
+            if (mensaje == null) {
+                System.out.println("Es nulo");
+            }
+            if ("FINALIZACION_PARTIDA".equals(mensaje)) {
+                partidaComenzada = true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            return partidaComenzada;
+        }
+    }
+    
 }

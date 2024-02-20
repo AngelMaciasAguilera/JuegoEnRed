@@ -29,6 +29,7 @@ public class JFServidor extends javax.swing.JFrame {
     private String respuestaCorrecta = "";
     private String respuestaElegida = "";
     private String nombre = "Servidor";
+    private Socket cliente;
 
     /**
      * Creates new form JFPrincipal
@@ -37,8 +38,6 @@ public class JFServidor extends javax.swing.JFrame {
         initComponents();
         cs = new ConServidor(nombre, puerto);
         juego = new Juego();
-        this.puntosServidor.setText(String.valueOf(this.juego.getPuntos()));
-        
     }
 
     /**
@@ -182,7 +181,8 @@ public class JFServidor extends javax.swing.JFrame {
 
                 });
                 // Espera a que algún cliente se conecte
-                cs.notificarInicioJuego(cs.getServidor().accept());
+                this.cliente = cs.getServidor().accept();
+                cs.notificarInicioJuego(this.cliente);
                 this.btEmpezarJuego.setEnabled(false);
                 fJuego();
                 JOptionPane.showMessageDialog(this, "Se ha conectado un cliente correctamente");
@@ -192,8 +192,7 @@ public class JFServidor extends javax.swing.JFrame {
         });
         // Inicia el hilo de espera
         hiloEspera.start();
-        
-        
+
 
     }//GEN-LAST:event_btEmpezarJuegoActionPerformed
 
@@ -245,8 +244,8 @@ public class JFServidor extends javax.swing.JFrame {
     }
 
     private void fJuego() {
-        
         Thread juegoThread = new Thread(() -> {
+            String resultado = "";
             int puntos = 0;
             for (int i = 1; i < 16; i++) {
                 this.indicadorRondaServidor.setText(String.valueOf(i));
@@ -265,8 +264,8 @@ public class JFServidor extends javax.swing.JFrame {
                 }
 
                 if (this.respuestaElegida.equals(this.respuestaCorrecta)) {
-                    this.juego.setPuntos(60);
-                    this.puntosServidor.setText(String.valueOf(this.juego.getPuntos()));
+                    Juego.PUNTOSSERVIDOR += 60;
+                    this.puntosServidor.setText(String.valueOf(Juego.PUNTOSSERVIDOR));
                 }
 
                 // Una vez que el usuario ha contestado, modificar la pregunta nuevamente
@@ -282,12 +281,45 @@ public class JFServidor extends javax.swing.JFrame {
                     this.opcion2Servidor.setText("Finalizado");
                     this.opcion3Servidor.setText("Finalizado");
                     this.opcion4Servidor.setText("Finalizado");
+                    try {
+                        this.cs.notificarRespuestaFinalizada(this.cliente);
+                    } catch (IOException ex) {
+                        Logger.getLogger(JFServidor.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    if (cs.comprobarRival(this) == true) {
+                        switch (comprobarResultadoServidor()) {
+                            case 0:
+                                resultado = "Han quedado empatados";
+                                break;
+                            case -1:
+                                resultado = "Has perdido. :((( ";
+                                break;
+                            case 1:
+                                resultado = "Has ganado. ¡Enhorabuena!";
+                                break;
+
+                        }
+                        JOptionPane.showMessageDialog(this, resultado);
+                        this.dispose();
+                    }
+
                 }
             }
         });
 
         juegoThread.start();
 
+    }
+
+    private int comprobarResultadoServidor() {
+        int recuentoPuntos = 0;
+        if (Juego.PUNTOSCLIENTE > Juego.PUNTOSSERVIDOR) {
+            recuentoPuntos = 1;
+        } else {
+            recuentoPuntos = -1;
+        }
+        return recuentoPuntos;
     }
 
     private void modificarEstado(boolean estado) {
