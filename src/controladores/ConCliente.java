@@ -4,7 +4,9 @@
  */
 package controladores;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Objects;
@@ -97,5 +99,21 @@ public class ConCliente implements Runnable {
     @Override
     public void run() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    public boolean confirmarInicioPartida() {
+        boolean partidaComenzada = false;
+        try {
+            BufferedReader lector = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
+            String mensaje = lector.readLine();
+
+            if ("INICIO_PARTIDA".equals(mensaje)) {
+                partidaComenzada = true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally{
+            return partidaComenzada;
+        }
     }
 }

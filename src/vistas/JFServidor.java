@@ -7,6 +7,7 @@ package vistas;
 import controladores.ConServidor;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -25,6 +26,8 @@ public class JFServidor extends javax.swing.JFrame {
     private boolean haFinalizado = false;
     private Juego juego;
     private int puerto = 6010;
+    private String respuestaCorrecta = "";
+    private String respuestaElegida = "";
     private String nombre = "Servidor";
 
     /**
@@ -34,7 +37,8 @@ public class JFServidor extends javax.swing.JFrame {
         initComponents();
         cs = new ConServidor(nombre, puerto);
         juego = new Juego();
-        modificarEstado(false);
+        this.puntosServidor.setText(String.valueOf(this.juego.getPuntos()));
+        
     }
 
     /**
@@ -54,19 +58,41 @@ public class JFServidor extends javax.swing.JFrame {
         btEmpezarJuego = new javax.swing.JButton();
         Spuntos = new javax.swing.JLabel();
         puntosServidor = new javax.swing.JLabel();
-        JLestadoServidor = new javax.swing.JLabel();
+        numeroRondas = new javax.swing.JLabel();
+        indicadorRonda = new javax.swing.JLabel();
+        limiteRondas = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         preguntaServidor.setText("Pregunta");
 
         opcion1Servidor.setText("jButton1");
+        opcion1Servidor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcion1ServidorActionPerformed(evt);
+            }
+        });
 
         opcion2Servidor.setText("jButton2");
+        opcion2Servidor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcion2ServidorActionPerformed(evt);
+            }
+        });
 
         opcion3Servidor.setText("jButton3");
+        opcion3Servidor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcion3ServidorActionPerformed(evt);
+            }
+        });
 
         opcion4Servidor.setText("jButton4");
+        opcion4Servidor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opcion4ServidorActionPerformed(evt);
+            }
+        });
 
         btEmpezarJuego.setText("Empezar partida");
         btEmpezarJuego.addActionListener(new java.awt.event.ActionListener() {
@@ -79,32 +105,40 @@ public class JFServidor extends javax.swing.JFrame {
 
         puntosServidor.setText("0");
 
-        JLestadoServidor.setText("jLabel1");
+        numeroRondas.setText("Ronda:");
+
+        indicadorRonda.setText("1");
+
+        limiteRondas.setText("/15");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addComponent(Spuntos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(puntosServidor)
-                .addGap(80, 80, 80)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(preguntaServidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(opcion1Servidor, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                    .addComponent(opcion2Servidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(opcion3Servidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(opcion4Servidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btEmpezarJuego)
-                        .addGap(23, 23, 23))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(JLestadoServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(53, 53, 53))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(Spuntos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(puntosServidor)
+                        .addGap(80, 80, 80)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(preguntaServidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(opcion1Servidor, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
+                            .addComponent(opcion2Servidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(opcion3Servidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(opcion4Servidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(198, 198, 198)
+                        .addComponent(numeroRondas)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(indicadorRonda)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(limiteRondas)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
+                .addComponent(btEmpezarJuego)
+                .addGap(23, 23, 23))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,11 +146,14 @@ public class JFServidor extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(btEmpezarJuego)
-                        .addGap(18, 18, 18)
-                        .addComponent(JLestadoServidor))
+                        .addComponent(btEmpezarJuego))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
+                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(numeroRondas)
+                            .addComponent(indicadorRonda)
+                            .addComponent(limiteRondas))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(Spuntos)
@@ -137,31 +174,127 @@ public class JFServidor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btEmpezarJuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEmpezarJuegoActionPerformed
-        try {
-            this.JLestadoServidor.setText("Esperando al cliente...");
-            modificarEstado(true);
-            Socket cliente = cs.getServidor().accept();
-            System.out.println(cliente);
-        } catch (IOException ex) {
-            Logger.getLogger(JFServidor.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Thread hiloEspera = new Thread(() -> {
+            try {
+                // Muestra la ventana de espera mientras se está esperando a que un cliente se conecte
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(this, "Esperando a que algún cliente se conecte...");
+
+                });
+                // Espera a que algún cliente se conecte
+                cs.notificarInicioJuego(cs.getServidor().accept());
+                this.btEmpezarJuego.setEnabled(false);
+                fJuego();
+                JOptionPane.showMessageDialog(this, "Se ha conectado un cliente correctamente");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+        // Inicia el hilo de espera
+        hiloEspera.start();
         
-        modificarEstado(false);
         
+
     }//GEN-LAST:event_btEmpezarJuegoActionPerformed
+
+    private void opcion1ServidorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcion1ServidorActionPerformed
+        this.haContestado = true;
+        this.respuestaElegida = opcion1Servidor.getText();
+    }//GEN-LAST:event_opcion1ServidorActionPerformed
+
+    private void opcion2ServidorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcion2ServidorActionPerformed
+        this.haContestado = true;
+        this.respuestaElegida = opcion2Servidor.getText();
+    }//GEN-LAST:event_opcion2ServidorActionPerformed
+
+    private void opcion3ServidorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcion3ServidorActionPerformed
+        this.haContestado = true;
+        this.respuestaElegida = opcion3Servidor.getText();
+    }//GEN-LAST:event_opcion3ServidorActionPerformed
+
+    private void opcion4ServidorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcion4ServidorActionPerformed
+        this.haContestado = true;
+        this.respuestaElegida = opcion4Servidor.getText();
+    }//GEN-LAST:event_opcion4ServidorActionPerformed
 
     //Metodos auxiliares 
     private void modificarPregunta() {
         Pregunta pregunta = juego.obtenerPreguntaAleatoria();
+
+        // Verifica si la pregunta obtenida es nula
+        if (pregunta == null) {
+            System.out.println("Pregunta invalida.");
+            return;
+        }
+
         this.preguntaServidor.setText(pregunta.getPregunta());
-        this.opcion1Servidor.setText(pregunta.getPosiblesRespuestas().get(1));
-        this.opcion2Servidor.setText(pregunta.getPosiblesRespuestas().get(2));
-        this.opcion3Servidor.setText(pregunta.getPosiblesRespuestas().get(3));
-        this.opcion4Servidor.setText(pregunta.getPosiblesRespuestas().get(4));
+        List<String> posiblesRespuestas = pregunta.getPosiblesRespuestas();
+
+        // Verifica si hay al menos 4 posibles respuestas
+        if (posiblesRespuestas.size() < 4) {
+            System.out.println("La pregunta no tiene suficientes respuestas.");
+            haFinalizado = true;
+            return;
+        }
+
+        this.opcion1Servidor.setText(posiblesRespuestas.get(0));
+        this.opcion2Servidor.setText(posiblesRespuestas.get(1));
+        this.opcion3Servidor.setText(posiblesRespuestas.get(2));
+        this.opcion4Servidor.setText(posiblesRespuestas.get(3));
+        this.respuestaCorrecta = pregunta.getRespuesta();
     }
-    
-    private void modificarEstado(boolean estado){
-        this.JLestadoServidor.setVisible(estado);
+
+    private void fJuego() {
+        
+        Thread juegoThread = new Thread(() -> {
+            int puntos = 0;
+            for (int i = 1; i < 16; i++) {
+                this.indicadorRonda.setText(String.valueOf(i));
+                SwingUtilities.invokeLater(() -> {
+                    modificarPregunta();
+                    modificarEstado(true); // Habilitar botones
+                });
+
+                // Esperar hasta que el usuario haya contestado
+                while (!haContestado) {
+                    try {
+                        Thread.sleep(100); // Puedes ajustar el tiempo de espera según tus necesidades
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (this.respuestaElegida.equals(this.respuestaCorrecta)) {
+                    this.juego.setPuntos(60);
+                    this.puntosServidor.setText(String.valueOf(this.juego.getPuntos()));
+                }
+
+                // Una vez que el usuario ha contestado, modificar la pregunta nuevamente
+                SwingUtilities.invokeLater(() -> {
+                    modificarPregunta();
+                });
+
+                haContestado = false; // Reiniciar la bandera después de la respuesta
+                if (i == 15) {
+                    modificarEstado(false);
+                    this.preguntaServidor.setText("El juego ha finalizado si quiere puede jugar otra ronda");
+                    this.opcion1Servidor.setText("Finalizado");
+                    this.opcion2Servidor.setText("Finalizado");
+                    this.opcion3Servidor.setText("Finalizado");
+                    this.opcion4Servidor.setText("Finalizado");
+                }
+            }
+        });
+
+        juegoThread.start();
+
+    }
+
+    private void modificarEstado(boolean estado) {
+        this.opcion1Servidor.setEnabled(estado);
+        this.opcion2Servidor.setEnabled(estado);
+        this.opcion3Servidor.setEnabled(estado);
+        this.opcion4Servidor.setEnabled(estado);
     }
 
     /**
@@ -207,9 +340,11 @@ public class JFServidor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel JLestadoServidor;
     private javax.swing.JLabel Spuntos;
     private javax.swing.JButton btEmpezarJuego;
+    private javax.swing.JLabel indicadorRonda;
+    private javax.swing.JLabel limiteRondas;
+    private javax.swing.JLabel numeroRondas;
     private javax.swing.JButton opcion1Servidor;
     private javax.swing.JButton opcion2Servidor;
     private javax.swing.JButton opcion3Servidor;

@@ -28,7 +28,7 @@ public class Juego {
     }
 
     public void setPuntos(int puntos) {
-        this.puntos = puntos;
+        this.puntos += puntos;
     }
 
     
@@ -73,8 +73,8 @@ public class Juego {
     }
 
     //Metodo para obtener una pregunta aleatoria
-    public Pregunta obtenerPreguntaAleatoria() {
-        int index = (int)(Math.random() * 71);
+    public synchronized Pregunta obtenerPreguntaAleatoria() {
+        int index = (int)(Math.random() * 70);
         Pregunta pregunta = this.preguntas.get(index);
         return pregunta;
     }

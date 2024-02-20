@@ -5,7 +5,9 @@
 package controladores;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Objects;
 
 /**
@@ -91,6 +93,17 @@ public class ConServidor implements Runnable {
     @Override
     public String toString() {
         return "ConServidor{" + "nombre=" + nombre + ", hilo=" + hilo + ", servidor=" + servidor + ", puerto=" + puerto + '}';
+    }
+    
+    
+    public void notificarInicioJuego(Socket cliente){
+    
+        try {
+            PrintWriter escritor = new PrintWriter(cliente.getOutputStream(), true);
+            escritor.println("INICIO_PARTIDA"); // Mensaje de señalización
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

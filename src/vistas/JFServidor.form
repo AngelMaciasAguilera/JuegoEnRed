@@ -24,29 +24,33 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
-              <Component id="Spuntos" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="puntosServidor" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="preguntaServidor" max="32767" attributes="0"/>
-                  <Component id="opcion1Servidor" pref="183" max="32767" attributes="0"/>
-                  <Component id="opcion2Servidor" max="32767" attributes="0"/>
-                  <Component id="opcion3Servidor" max="32767" attributes="0"/>
-                  <Component id="opcion4Servidor" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace pref="87" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="btEmpezarJuego" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="JLestadoServidor" min="-2" pref="167" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+                      <Component id="Spuntos" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="puntosServidor" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="preguntaServidor" max="32767" attributes="0"/>
+                          <Component id="opcion1Servidor" pref="183" max="32767" attributes="0"/>
+                          <Component id="opcion2Servidor" max="32767" attributes="0"/>
+                          <Component id="opcion3Servidor" max="32767" attributes="0"/>
+                          <Component id="opcion4Servidor" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="198" max="-2" attributes="0"/>
+                      <Component id="numeroRondas" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="indicadorRonda" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="limiteRondas" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace pref="169" max="32767" attributes="0"/>
+              <Component id="btEmpezarJuego" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -57,11 +61,15 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                       <Component id="btEmpezarJuego" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="JLestadoServidor" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="numeroRondas" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="indicadorRonda" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="limiteRondas" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="Spuntos" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -94,21 +102,33 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="jButton1"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcion1ServidorActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="opcion2Servidor">
       <Properties>
         <Property name="text" type="java.lang.String" value="jButton2"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcion2ServidorActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="opcion3Servidor">
       <Properties>
         <Property name="text" type="java.lang.String" value="jButton3"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcion3ServidorActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="opcion4Servidor">
       <Properties>
         <Property name="text" type="java.lang.String" value="jButton4"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="opcion4ServidorActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btEmpezarJuego">
       <Properties>
@@ -128,9 +148,19 @@
         <Property name="text" type="java.lang.String" value="0"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="JLestadoServidor">
+    <Component class="javax.swing.JLabel" name="numeroRondas">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jLabel1"/>
+        <Property name="text" type="java.lang.String" value="Ronda:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="indicadorRonda">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="limiteRondas">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="/15"/>
       </Properties>
     </Component>
   </SubComponents>
