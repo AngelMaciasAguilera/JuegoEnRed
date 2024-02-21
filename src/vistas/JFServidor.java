@@ -201,14 +201,14 @@ public class JFServidor extends javax.swing.JFrame {
             try {
                 // Muestra la ventana de espera mientras se está esperando a que un cliente se conecte
                 SwingUtilities.invokeLater(() -> {
-                    JOptionPane.showMessageDialog(this, "Esperando a que algún cliente se conecte...");
+                    JOptionPane.showMessageDialog(this, "Esperando a que algún jugador se conecte...");
                 });
                 // Espera a que algún cliente se conecte
                 this.cliente = cs.getServidor().accept();
                 cs.notificarInicioJuego(this.cliente);
                 this.btEmpezarJuego.setEnabled(false);
                 fJuego(); // Inicia el juego
-                JOptionPane.showMessageDialog(this, "Se ha conectado un cliente correctamente");
+                JOptionPane.showMessageDialog(this, "Se ha conectado un jugador correctamente");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
