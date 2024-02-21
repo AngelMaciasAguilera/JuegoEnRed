@@ -77,9 +77,9 @@ public class JFServidor extends javax.swing.JFrame {
         limiteRondas = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(575, 575));
+        setTitle("Servidor");
         setMinimumSize(new java.awt.Dimension(575, 575));
-        setPreferredSize(new java.awt.Dimension(700, 350));
+        setPreferredSize(new java.awt.Dimension(700, 460));
         setResizable(false);
 
         opcion1Servidor.addActionListener(new java.awt.event.ActionListener() {

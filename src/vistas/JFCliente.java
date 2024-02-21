@@ -64,8 +64,8 @@ public class JFCliente extends javax.swing.JFrame {
         Spuntos = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(700, 550));
-        setPreferredSize(new java.awt.Dimension(750, 550));
+        setTitle("Cliente");
+        setMinimumSize(new java.awt.Dimension(750, 550));
         setResizable(false);
         getContentPane().setLayout(null);
 
