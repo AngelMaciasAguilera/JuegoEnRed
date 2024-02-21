@@ -1,6 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Controlador del Cliente
+ * Maneja la conexión y la comunicación del cliente con el servidor.
  */
 package controladores;
 
@@ -11,16 +11,20 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import vistas.JFCliente;
 
 /**
- *
- * @author Angel
+ * Controlador del Cliente Maneja la conexión y la comunicación del cliente con
+ * el servidor.
  */
-public class ConCliente implements Runnable {
+public class ConCliente {
 
+    // Atributos
     private String nombre;
     private Thread hilo;
     private Socket cliente;
@@ -28,26 +32,24 @@ public class ConCliente implements Runnable {
     private String direccion_ip;
     private FlujoClienteServidor fcs;
 
+    // Constructor
     public ConCliente(String nombre, int puerto, String direccion_ip) {
         this.nombre = nombre;
         this.puerto = puerto;
         this.direccion_ip = direccion_ip;
-        this.hilo = new Thread(this, nombre);
+
+        // Establecer la conexión con el servidor
         try {
             cliente = new Socket(this.direccion_ip, this.puerto);
             fcs = new FlujoClienteServidor(cliente);
-            String texto = "conexion establecida correctamente";
-
         } catch (UnknownHostException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
 
+    // Métodos Getters
     public String getNombre() {
         return nombre;
     }
@@ -68,6 +70,7 @@ public class ConCliente implements Runnable {
         return direccion_ip;
     }
 
+    // Sobrescritura de métodos
     @Override
     public String toString() {
         return "ConCliente{" + "nombre=" + nombre + ", hilo=" + hilo + ", cliente=" + cliente + ", puerto=" + puerto + ", direccion_ip=" + direccion_ip + '}';
@@ -103,14 +106,11 @@ public class ConCliente implements Runnable {
         return Objects.equals(this.cliente, other.cliente);
     }
 
-    @Override
-    public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    // Método para confirmar el inicio de la partida
     public boolean confirmarInicioPartida() {
         boolean partidaComenzada = false;
         try {
+            // Recibe un mensaje del servidor indicando el inicio de la partida
             String mensaje = this.fcs.recibirMensaje();
             if ("INICIO_PARTIDA".equals(mensaje)) {
                 partidaComenzada = true;
@@ -122,19 +122,23 @@ public class ConCliente implements Runnable {
         }
     }
 
+    // Método para comprobar si el rival ha finalizado la partida
     public boolean comprobarRival(Component component) {
         boolean partidaComenzada = false;
         try {
+            // Inicia un hilo para mostrar un mensaje de espera mientras se espera la respuesta del rival
             new Thread(() -> {
-
                 SwingUtilities.invokeLater(() -> {
                     JOptionPane.showMessageDialog(component, "Esperando a que el rival conteste");
-
                 });
             }).start();
+
+            // Recibe un mensaje del servidor indicando la finalización de la partida por parte del rival
             String mensaje = this.fcs.recibirMensaje();
+
+            // Comprueba el mensaje recibido
             if (mensaje == null) {
-                System.out.println("Es nulo");
+                mensaje = "Nulo";
             }
             if ("FINALIZACION_PARTIDA".equals(mensaje)) {
                 partidaComenzada = true;
@@ -145,9 +149,38 @@ public class ConCliente implements Runnable {
             return partidaComenzada;
         }
     }
-    
-    
-     public void notificarRespuestaFinalizada() throws IOException {
-       this.fcs.enviarMensaje("FINALIZACION_PARTIDA");
+
+    // Método para notificar al servidor que el cliente ha finalizado su respuesta
+    public void notificarRespuestaFinalizada() throws IOException {
+        this.fcs.enviarMensaje("FINALIZACION_PARTIDA");
+    }
+
+    // Método para notificar al servidor la puntuación del cliente
+    public void notificarPuntuacionCliente(int puntuacionCliente) throws IOException {
+        System.out.println(puntuacionCliente);
+        this.fcs.enviarMensaje(String.valueOf(puntuacionCliente));
+    }
+
+    // Método para recibir la puntuación del servidor
+    public int recibirPuntuacionServidor() {
+        int puntuacionServidor = 0;
+        try {
+            // Recibe un mensaje del servidor con la puntuación
+            String mensaje = this.fcs.recibirMensaje();
+            System.out.println(mensaje);
+            puntuacionServidor = Integer.parseInt(mensaje);
+        } catch (NumberFormatException ex) {
+            // Manejo de excepciones si el formato no es el esperado
+            puntuacionServidor = -2;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                this.fcs.cerrarConexion();
+            } catch (IOException ex) {
+                Logger.getLogger(ConCliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return puntuacionServidor;
+        }
     }
 }

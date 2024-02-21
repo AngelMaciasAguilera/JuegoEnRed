@@ -1,6 +1,5 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Representa una pregunta con opciones de respuesta.
  */
 package modelos;
 
@@ -8,21 +7,23 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- *
- * @author Angel
+ * Representa una pregunta con opciones de respuesta.
  */
 public class Pregunta {
 
+    // Atributos
     private String pregunta;
     private ArrayList<String> posiblesRespuestas;
     private String respuesta;
 
+    // Constructor
     public Pregunta(String preguntas, ArrayList<String> posiblesRespuestas, String respuesta) {
         this.pregunta = preguntas;
         this.posiblesRespuestas = posiblesRespuestas;
         this.respuesta = respuesta;
     }
 
+    // Métodos de acceso
     public String getPregunta() {
         return pregunta;
     }
@@ -47,6 +48,7 @@ public class Pregunta {
         this.respuesta = respuesta;
     }
 
+    // Métodos sobreescritos
     @Override
     public int hashCode() {
         int hash = 7;
@@ -79,7 +81,8 @@ public class Pregunta {
 
     @Override
     public String toString() {
-        return "Pregunta{" + "preguntas=" + pregunta + ", posiblesRespuestas=" + posiblesRespuestas + ", respuesta=" + respuesta + '}';
+        return "Pregunta{" + "pregunta=" + pregunta + ", posiblesRespuestas=" + posiblesRespuestas + ", respuesta=" + respuesta + '}';
     }
-
+    
+    
 }

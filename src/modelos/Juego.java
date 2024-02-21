@@ -13,17 +13,22 @@ import java.util.Objects;
  *
  * @author Angel
  */
+/**
+ * Representa un juego con preguntas y puntos acumulados.
+ */
 public class Juego {
 
-    public static int PUNTOSCLIENTE = 0;
-    public static int PUNTOSSERVIDOR = 0;
+    // Atributos
+    private int puntos;
     private HashMap<Integer, Pregunta> preguntas;
 
+    // Constructor
     public Juego() {
+        puntos = 0;
         this.preguntas = this.rellenarPreguntas();
     }
 
-
+    // Métodos de acceso
     public HashMap<Integer, Pregunta> getPreguntas() {
         return preguntas;
     }
@@ -32,10 +37,19 @@ public class Juego {
         this.preguntas = preguntas;
     }
 
+    public int getPuntos() {
+        return puntos;
+    }
+
+    public void setPuntos(int puntos) {
+        this.puntos += puntos;
+    }
+
+    // Métodos sobreescritos
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 83 * hash + this.PUNTOSCLIENTE;
+        hash = 83 * hash + this.puntos;
         hash = 83 * hash + Objects.hashCode(this.preguntas);
         return hash;
     }
@@ -52,7 +66,7 @@ public class Juego {
             return false;
         }
         final Juego other = (Juego) obj;
-        if (PUNTOSCLIENTE != other.PUNTOSCLIENTE) {
+        if (this.puntos != other.puntos) {
             return false;
         }
         return Objects.equals(this.preguntas, other.preguntas);
@@ -60,17 +74,17 @@ public class Juego {
 
     @Override
     public String toString() {
-        return "Juego{" + "contador=" + PUNTOSCLIENTE + ", preguntas=" + preguntas + '}';
+        return "Juego{" + "puntos=" + puntos + ", preguntas=" + preguntas + '}';
     }
 
-    //Metodo para obtener una pregunta aleatoria
+    // Método para obtener una pregunta aleatoria
     public synchronized Pregunta obtenerPreguntaAleatoria() {
-        int index = (int)(Math.random() * 70);
+        int index = (int) (Math.random() * 70) + 1;
         Pregunta pregunta = this.preguntas.get(index);
         return pregunta;
     }
 
-    //Este metodo lo usaremos para sobreCargar el hashMap de preguntas
+    // Método para rellenar el HashMap de preguntas
     private HashMap<Integer, Pregunta> rellenarPreguntas() {
         HashMap<Integer, Pregunta> preguntasObtenidas = new HashMap<>();
         preguntasObtenidas.put(1, new Pregunta("¿Cuál es la capital de Australia?", new ArrayList<String>() {

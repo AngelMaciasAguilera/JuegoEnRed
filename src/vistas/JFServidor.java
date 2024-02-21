@@ -5,39 +5,54 @@
 package vistas;
 
 import controladores.ConServidor;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import modelos.*;
 
 /**
+ * Esta clase representa la interfaz gráfica del servidor del juego de preguntas
+ * y respuestas. El servidor espera a que un cliente se conecte para iniciar la
+ * partida. Durante la partida, el servidor muestra preguntas y espera las
+ * respuestas del cliente. Al finalizar el juego, muestra el resultado y cierra
+ * la aplicación.
  *
  * @author Angel
  */
 public class JFServidor extends javax.swing.JFrame {
 
-    private ConServidor cs;
-    private boolean haContestado = false;
-    private boolean haFinalizado = false;
-    private Juego juego;
-    private int puerto = 6010;
-    private String respuestaCorrecta = "";
-    private String respuestaElegida = "";
-    private String nombre = "Servidor";
-    private Socket cliente;
+    private ConServidor cs; // Controlador del servidor
+    private boolean haContestado = false; // Bandera para indicar si se ha recibido una respuesta del cliente
+    private Juego juego; // Objeto que representa el juego
+    private int puerto = 6010; // Puerto de conexión del servidor
+    private String respuestaCorrecta = ""; // Respuesta correcta de la pregunta actual
+    private String respuestaElegida = ""; // Respuesta elegida por el cliente
+    private String nombre = "Servidor"; // Nombre del servidor
+    private Socket cliente; // Socket del cliente conectado
+    private int puntosCliente; // Puntos obtenidos por el cliente
 
     /**
      * Creates new form JFPrincipal
      */
     public JFServidor() {
         initComponents();
+
         cs = new ConServidor(nombre, puerto);
         juego = new Juego();
+
     }
 
     /**
@@ -49,9 +64,9 @@ public class JFServidor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        preguntaServidor = new javax.swing.JLabel();
         opcion1Servidor = new javax.swing.JButton();
         opcion2Servidor = new javax.swing.JButton();
+        preguntaServidor = new javax.swing.JLabel();
         opcion3Servidor = new javax.swing.JButton();
         opcion4Servidor = new javax.swing.JButton();
         btEmpezarJuego = new javax.swing.JButton();
@@ -62,31 +77,38 @@ public class JFServidor extends javax.swing.JFrame {
         limiteRondas = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(575, 575));
+        setMinimumSize(new java.awt.Dimension(575, 575));
+        setPreferredSize(new java.awt.Dimension(700, 350));
+        setResizable(false);
 
-        preguntaServidor.setText("Pregunta");
-
-        opcion1Servidor.setText("jButton1");
         opcion1Servidor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 opcion1ServidorActionPerformed(evt);
             }
         });
 
-        opcion2Servidor.setText("jButton2");
         opcion2Servidor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 opcion2ServidorActionPerformed(evt);
             }
         });
 
-        opcion3Servidor.setText("jButton3");
+        preguntaServidor.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        preguntaServidor.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        preguntaServidor.setText("Pregunta");
+        preguntaServidor.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        preguntaServidor.setAutoscrolls(true);
+        preguntaServidor.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
+        preguntaServidor.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        preguntaServidor.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+
         opcion3Servidor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 opcion3ServidorActionPerformed(evt);
             }
         });
 
-        opcion4Servidor.setText("jButton4");
         opcion4Servidor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 opcion4ServidorActionPerformed(evt);
@@ -106,6 +128,7 @@ public class JFServidor extends javax.swing.JFrame {
 
         numeroRondas.setText("Ronda:");
 
+        indicadorRondaServidor.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         indicadorRondaServidor.setText("1");
 
         limiteRondas.setText("/15");
@@ -115,76 +138,76 @@ public class JFServidor extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addComponent(Spuntos, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(puntosServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(127, 127, 127)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(numeroRondas, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(Spuntos)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(puntosServidor)
-                        .addGap(80, 80, 80)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(preguntaServidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(opcion1Servidor, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                            .addComponent(opcion2Servidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(opcion3Servidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(opcion4Servidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(198, 198, 198)
-                        .addComponent(numeroRondas)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(indicadorRondaServidor)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(limiteRondas)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
-                .addComponent(btEmpezarJuego)
-                .addGap(23, 23, 23))
+                        .addGap(40, 40, 40)
+                        .addComponent(indicadorRondaServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(limiteRondas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(105, 105, 105)
+                .addComponent(btEmpezarJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(180, 180, 180)
+                .addComponent(preguntaServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(230, 230, 230)
+                .addComponent(opcion1Servidor, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(230, 230, 230)
+                .addComponent(opcion2Servidor, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(230, 230, 230)
+                .addComponent(opcion3Servidor, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(230, 230, 230)
+                .addComponent(opcion4Servidor, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(btEmpezarJuego))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(numeroRondas)
-                            .addComponent(indicadorRondaServidor)
-                            .addComponent(limiteRondas))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(Spuntos)
-                                .addComponent(puntosServidor))
-                            .addComponent(preguntaServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(39, 39, 39)
-                .addComponent(opcion1Servidor)
-                .addGap(35, 35, 35)
-                .addComponent(opcion2Servidor)
-                .addGap(43, 43, 43)
-                .addComponent(opcion3Servidor)
-                .addGap(32, 32, 32)
-                .addComponent(opcion4Servidor)
-                .addContainerGap(80, Short.MAX_VALUE))
+                    .addComponent(btEmpezarJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Spuntos)
+                    .addComponent(puntosServidor)
+                    .addComponent(numeroRondas)
+                    .addComponent(indicadorRondaServidor)
+                    .addComponent(limiteRondas))
+                .addGap(10, 10, 10)
+                .addComponent(preguntaServidor, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(opcion1Servidor, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(opcion2Servidor, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(opcion3Servidor, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(opcion4Servidor, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Inicia un hilo de espera para que un cliente se conecte.
+     */
     private void btEmpezarJuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEmpezarJuegoActionPerformed
         Thread hiloEspera = new Thread(() -> {
             try {
                 // Muestra la ventana de espera mientras se está esperando a que un cliente se conecte
                 SwingUtilities.invokeLater(() -> {
                     JOptionPane.showMessageDialog(this, "Esperando a que algún cliente se conecte...");
-
                 });
                 // Espera a que algún cliente se conecte
                 this.cliente = cs.getServidor().accept();
                 cs.notificarInicioJuego(this.cliente);
                 this.btEmpezarJuego.setEnabled(false);
-                fJuego();
+                fJuego(); // Inicia el juego
                 JOptionPane.showMessageDialog(this, "Se ha conectado un cliente correctamente");
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -195,7 +218,7 @@ public class JFServidor extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btEmpezarJuegoActionPerformed
-
+    // En los botones cambiamos el estado de ha contestado a true y obtenemos el texto de la respuesta escogida para luego compararla con la respuesta correcta
     private void opcion1ServidorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcion1ServidorActionPerformed
         this.haContestado = true;
         this.respuestaElegida = opcion1Servidor.getText();
@@ -216,23 +239,24 @@ public class JFServidor extends javax.swing.JFrame {
         this.respuestaElegida = opcion4Servidor.getText();
     }//GEN-LAST:event_opcion4ServidorActionPerformed
 
-    //Metodos auxiliares 
+    /**
+     * Modifica la pregunta en la interfaz con una pregunta aleatoria del juego.
+     */
     private void modificarPregunta() {
         Pregunta pregunta = juego.obtenerPreguntaAleatoria();
 
         // Verifica si la pregunta obtenida es nula
         if (pregunta == null) {
-            System.out.println("Pregunta invalida.");
+            System.out.println("Pregunta inválida.");
             return;
         }
 
-        this.preguntaServidor.setText(pregunta.getPregunta());
+        this.preguntaServidor.setText("<html>" + pregunta.getPregunta() + "<html>");
         List<String> posiblesRespuestas = pregunta.getPosiblesRespuestas();
 
         // Verifica si hay al menos 4 posibles respuestas
         if (posiblesRespuestas.size() < 4) {
             System.out.println("La pregunta no tiene suficientes respuestas.");
-            haFinalizado = true;
             return;
         }
 
@@ -243,29 +267,31 @@ public class JFServidor extends javax.swing.JFrame {
         this.respuestaCorrecta = pregunta.getRespuesta();
     }
 
+    /**
+     * Método principal que gestiona el flujo del juego.
+     */
     private void fJuego() {
         Thread juegoThread = new Thread(() -> {
             String resultado = "";
-            int puntos = 0;
-            for (int i = 1; i < 16; i++) {
+            for (int i = 1; i < 16; i++) { // 15 rondas de juego
                 this.indicadorRondaServidor.setText(String.valueOf(i));
                 SwingUtilities.invokeLater(() -> {
                     modificarPregunta();
-                    modificarEstado(true); // Habilitar botones
+                    modificarEstado(true); // Habilitar botones de respuesta
                 });
 
                 // Esperar hasta que el usuario haya contestado
                 while (!haContestado) {
                     try {
-                        Thread.sleep(100); // Puedes ajustar el tiempo de espera según tus necesidades
+                        Thread.sleep(300);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
 
                 if (this.respuestaElegida.equals(this.respuestaCorrecta)) {
-                    Juego.PUNTOSSERVIDOR += 60;
-                    this.puntosServidor.setText(String.valueOf(Juego.PUNTOSSERVIDOR));
+                    this.juego.setPuntos(60); // Sumar puntos al juego
+                    this.puntosServidor.setText(String.valueOf(this.juego.getPuntos()));
                 }
 
                 // Una vez que el usuario ha contestado, modificar la pregunta nuevamente
@@ -274,54 +300,80 @@ public class JFServidor extends javax.swing.JFrame {
                 });
 
                 haContestado = false; // Reiniciar la bandera después de la respuesta
-                if (i == 15) {
-                    modificarEstado(false);
-                    this.preguntaServidor.setText("El juego ha finalizado si quiere puede jugar otra ronda");
-                    this.opcion1Servidor.setText("Finalizado");
-                    this.opcion2Servidor.setText("Finalizado");
-                    this.opcion3Servidor.setText("Finalizado");
-                    this.opcion4Servidor.setText("Finalizado");
+                if (i == 15) { // Verificar si es la última ronda
+                    modificarEstado(false); // Deshabilitar botones de respuesta
+                    SwingUtilities.invokeLater(() -> {
+                        this.preguntaServidor.setText("<html>El juego ha finalizado. Si desea, puede jugar otra ronda<html>");
+                        this.opcion1Servidor.setText("Finalizado");
+                        this.opcion2Servidor.setText("Finalizado");
+                        this.opcion3Servidor.setText("Finalizado");
+                        this.opcion4Servidor.setText("Finalizado");
+                    });
                     try {
                         this.cs.notificarRespuestaFinalizada(this.cliente);
                     } catch (IOException ex) {
                         Logger.getLogger(JFServidor.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
+                    // Comprobar resultado con el cliente
                     if (cs.comprobarRival(this) == true) {
-                        switch (comprobarResultadoServidor()) {
+                        try {
+                            this.cs.notificarPuntuacionServidor(this.juego.getPuntos(), cliente);
+                            this.puntosCliente = this.cs.recibirPuntuacionCliente();
+                        } catch (IOException ex) {
+                            Logger.getLogger(JFServidor.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        try {
+                            Thread.sleep(3000); // Esperar 3 segundos antes de mostrar el resultado final
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(JFCliente.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        switch (comprobarResultadoServidor(this.puntosCliente)) {
                             case 0:
                                 resultado = "Han quedado empatados";
                                 break;
                             case -1:
-                                resultado = "Has perdido. :((( ";
+                                resultado = "Has perdido.\n GAME OVER :(";
                                 break;
                             case 1:
                                 resultado = "Has ganado. ¡Enhorabuena!";
                                 break;
-
                         }
                         JOptionPane.showMessageDialog(this, resultado);
-                        this.dispose();
+                        this.dispose(); // Cierra la ventana del servidor
                     }
-
                 }
             }
         });
 
         juegoThread.start();
-
     }
 
-    private int comprobarResultadoServidor() {
+    /**
+     * Comprueba el resultado del juego comparando los puntos del servidor y del
+     * cliente.
+     *
+     * @param puntosCliente Puntos obtenidos por el cliente
+     * @return Valor que indica el resultado: 0 (empate), -1 (derrota), 1
+     * (victoria)
+     */
+    private synchronized int comprobarResultadoServidor(int puntosCliente) {
         int recuentoPuntos = 0;
-        if (Juego.PUNTOSCLIENTE > Juego.PUNTOSSERVIDOR) {
+        if (this.juego.getPuntos() > puntosCliente) {
             recuentoPuntos = 1;
-        } else {
+        } else if (puntosCliente > this.juego.getPuntos()) {
             recuentoPuntos = -1;
         }
         return recuentoPuntos;
     }
 
+    /**
+     * Modifica el estado de los botones de respuesta (activados o
+     * desactivados).
+     *
+     * @param estado Estado a establecer (true para activar, false para
+     * desactivar)
+     */
     private void modificarEstado(boolean estado) {
         this.opcion1Servidor.setEnabled(estado);
         this.opcion2Servidor.setEnabled(estado);
@@ -346,23 +398,18 @@ public class JFServidor extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFServidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFServidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFServidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFServidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
